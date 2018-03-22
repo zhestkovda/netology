@@ -10,3 +10,4 @@ function show(file){
 readAll('./logs/')
 	.then(files => files.forEach(show))
 	.catch(err => console.error(err))
+	

@@ -30,13 +30,13 @@ function readFile(file){
 
 const readAll = path => {
 	console.log(path);
-	readDir(path)
-		.then (files => Promise.all(
+	return readDir(path)
+	.then (files => Promise.all(
 
 		files.map( file => {
 			return readFile(path+file)
 				.then(content => {
-					return {file, contet}
+					return {file, content}
 				})
 				.catch(err => {
 					console.log(err);

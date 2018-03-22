@@ -7,7 +7,6 @@ const pathInfo = (path,callback) =>  {
 	var type;
 	var cont;
 	var childs = [];
-
 	fs.stat(path, (err,stats) => {
 		if(err) error = err;
 		if(stats.isFile()) // файл
@@ -16,8 +15,10 @@ const pathInfo = (path,callback) =>  {
 			fs.readFile(path,conf, (err,content) => {
 				if(err) { error = err; return;} 
 				cont = content;
+				info = {"path": path, "type":type, "content":cont, "childs":childs};
+				callback(error,info);
 			});
-
+			
 
 		}
 		if(stats.isDirectory()) // директория
@@ -26,16 +27,11 @@ const pathInfo = (path,callback) =>  {
 			fs.readdir(path, (err,files) => {
 				if(err) {error = err; return;}
 				childs = files;
-			})
-			
+				info = {"path": path, "type":type, "content":cont, "childs":childs};
+				callback(error,info);
+			})	
 		}
-	})
-
-
-	info = {"path": path, "type":type, "content":cont, "childs":childs};
-	callback(error,info);
+	})	
 }
-
-
 
 module.exports = pathInfo;
