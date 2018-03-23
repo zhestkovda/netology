@@ -19,11 +19,8 @@ function showInfo(err,info){
 		default:
 			console.log('Данный тип узла не поддерживается');
 			break;
-
 	}
 }
 
-
-//pathInfo("D:/Элметро/Нетология/hw1.1/task 3/test.txt",showInfo)
 pathInfo(__dirname, showInfo);
 pathInfo(__filename, showInfo);
