@@ -1,16 +1,14 @@
 const fs = require('fs');
 conf = {encoding:'utf8'};
 var temp;
-
 function readDir(path){
 	return new Promise((done,fail) => {
 		fs.readdir(path,(err,files) => {
-			if(err)
-			{fail(err);}
-			else
-			{
+			if(err){
+				fail(err);
+			}
+			else{
 				done(files); 
-				console.log(files);
 			}	
 		});
 	});	
@@ -19,47 +17,35 @@ function readDir(path){
 function readFile(file){
 	return new Promise((done,fail) => {
 		fs.readFile(file, conf,(err,content) => {
-						if(err) 
-							fail(err);
-						else
-							done(content);
+			if(err){ 
+				fail(err);
+			}
+			else{
+				done(content);
+			}
 		});
 	})
-
 }
 
 const readAll = path => {
-	console.log(path);
 	return readDir(path)
-	.then (files => Promise.all(
-
-		files.map( file => {
-			return readFile(path+file)
-				.then(content => {
-					return {file, content}
-				})
-				.catch(err => {
-					console.log(err);
-				})
-				
+		.then (files => Promise.all(
+			files.map( file => {
+				return readFile(path+file)
+					.then(content => {
+						return {file, content}
+					})
+					.catch(err => {
+						console.log(err);
+					})
+			})
+		))
+		.then(items => {
+			return items.map(item=>{
+		      	return item ? {name: item.file, content: item.content} : null
+		    })	
 		})
-
-	))
-
-	.then(items => {
-		return items.map(item=>{
-	      return item ? {name: item.file, content: item.content} : null
-	    })	
-	})
-	.then(items=>console.log(items))
- 	.catch(err => console.error(err))
+	 	.catch(err => console.error(err))
 }
-				
-				
-			
-			
-
-		
-
 
 module.exports = readAll;
