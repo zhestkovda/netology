@@ -8,24 +8,26 @@ const pathInfo = (path,callback) =>  {
 	var cont;
 	var childs = [];
 	fs.stat(path, (err,stats) => {
-		if(err) error = err;
-		if(stats.isFile()) // файл
-		{
+		if(err){
+			error = err;	
+		} 
+		if(stats.isFile()){
 			type = "file";
 			fs.readFile(path,conf, (err,content) => {
-				if(err) { error = err; return;} 
+				if(err) { 
+					error = err; return;
+				} 
 				cont = content;
 				info = {"path": path, "type":type, "content":cont, "childs":childs};
 				callback(error,info);
 			});
-			
-
 		}
-		if(stats.isDirectory()) // директория
-		{
+		if(stats.isDirectory()){
 			type = "directory";
 			fs.readdir(path, (err,files) => {
-				if(err) {error = err; return;}
+				if(err) {
+					error = err; return;
+				}
 				childs = files;
 				info = {"path": path, "type":type, "content":cont, "childs":childs};
 				callback(error,info);
