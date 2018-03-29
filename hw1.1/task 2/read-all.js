@@ -45,7 +45,6 @@ const readAll = path => {
 		      	return item ? {name: item.file, content: item.content} : null
 		    })	
 		})
-	 	.catch(err => console.error(err))
 }
 
 module.exports = readAll;

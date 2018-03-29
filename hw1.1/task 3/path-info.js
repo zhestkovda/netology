@@ -2,20 +2,22 @@ const fs = require('fs');
 const conf = {encoding: 'utf8'};
 
 const pathInfo = (path,callback) =>  {
-	var info;
-	var error;
-	var type;
-	var cont;
-	var childs = [];
+	let info;
+	let error;
+	let type;
+	let cont;
 	fs.stat(path, (err,stats) => {
 		if(err){
-			error = err;	
+			callback(err);
+			return;	
 		} 
 		if(stats.isFile()){
+			let childs;
 			type = "file";
 			fs.readFile(path,conf, (err,content) => {
 				if(err) { 
-					error = err; return;
+					callback(err);
+					return;	
 				} 
 				cont = content;
 				info = {"path": path, "type":type, "content":cont, "childs":childs};
@@ -23,10 +25,12 @@ const pathInfo = (path,callback) =>  {
 			});
 		}
 		if(stats.isDirectory()){
+			let childs = [];
 			type = "directory";
 			fs.readdir(path, (err,files) => {
 				if(err) {
-					error = err; return;
+					callback(err);
+					return;	
 				}
 				childs = files;
 				info = {"path": path, "type":type, "content":cont, "childs":childs};

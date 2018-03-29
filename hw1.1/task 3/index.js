@@ -9,6 +9,7 @@ function showInfo(err,info){
 		case 'file':
 			console.log(`${info.path} - является файлом, содержимое: `);
 			console.log(info.content);
+			console.log(info.childs);
 			console.log('-'.repeat(10));
 			break;
 		case 'directory':
