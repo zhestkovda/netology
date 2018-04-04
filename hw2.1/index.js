@@ -4,35 +4,17 @@ const https    = require('https');
 const fs	   = require('fs');
 const joinPath = require('path.join');
 const querystring = require('query-string');
+const urlpack   = require('url');
 const conf 	   = {encoding:'utf8'};
 
 const url  		= 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160723T183155Z.f2a3339517e26a3c.d86d2dc91f2e374351379bb3fe371985273278df';
 const port		= 3000;
 
-var rusText = 'Привет всем!!!';
+var rusText;
 var enText;
 
-const postData = querystring.stringify({
-  'text': rusText,
-  'lang': 'ru-en'
-});
+//console.log(url+ '&' + postData);
 
-console.log(url+ '&' + postData);
-
-const options = {
-  hostname: url+ '&' + postData,
-  port: 80,
-  path: '/',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Content-Length': Buffer.byteLength(postData)
-  }
-};
-
-//const request = https.request(url+ '&' + postData);
-//request.on('response', handler1);
-//request.end();
 function handler1(response) {
 	let data = '';
 	response.on('data', function (chunk) {
@@ -40,7 +22,8 @@ function handler1(response) {
 	});
 	response.on('end', function () {
 		enText = JSON.parse(data).text[0];
-		console.log(enText);
+		//console.log(enText);
+		return enText
 	});
 }
 
@@ -57,7 +40,6 @@ const server = http.createServer(function (req, res) {
 			res.end(); //end the response
 	    }
 	});
-
 });
 server.on('error', err => console.error(err));
 server.on('request', handler2);
@@ -67,11 +49,29 @@ server.on('listening', () => {
 server.listen(port); //the server object listens on port 8080
 
 function handler2(req, res) {
-	console.log(req.url);
+	var q = urlpack.parse(req.url, true);
+	var qdata = q.query;
+	if(Object.keys(qdata).length){   // если есть строка для перевода
+		const postData = querystring.stringify({
+		  'text': qdata.content,
+		  'lang': 'ru-en'
+		});
+		const request = https.request(url+ '&' + postData);
+		request.on('response', handler1);
+		request.end();
 
-	//let name = req.url.replace('/', '') || 'World';
-	//res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});
-	//res.write(`Hello ${name}!`);
+		console.log(enText);
+		//res.writeHeader(200, {"Content-Type": "text/html"}); 
+		res.write(querystring.stringify(enText));
+		//setTimeout(function() { 	
+	    //  	res.end();
+	    //}, 2000);
+	}
+
+	
+	//res.writeHead(200, 'OK', {'Content-Type': 'text/html'});
+	//res.write(qdata.content);
 	//res.end();
+
 }
 
