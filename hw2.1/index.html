@@ -5,26 +5,24 @@
 <meta charset="UTF-8">
 </head>
 <body>
-
 <script>
  
 function Translate() {
   var content = document.getElementById('inputtext').value;
+  //const fd = new FormData(document.getElementById('userform'))
   if (content){
-
     fetch('http://127.0.0.1:3000', {  
         method: 'post',  
         headers: {  
-          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'   //'Content-Type': 'application/json'
+          'Content-Type': 'application/x-www-form-urlencoded'
         },  
-        body: content//JSON.stringify({text:content}) //'foo=bar&lorem=ipsum'  
+        body: userform//document.getElementById('inputtext').value
       })
       //.then(json)  
       .then(function (response) {  
         console.log('Request succeeded with response: ', response.text());  
         var s = document.getElementById('result');
         s.value = response.text();
-
       })  
       .catch(function (error) {  
         console.log('Request failed', error);  
@@ -32,12 +30,10 @@ function Translate() {
   }
 }
 
-
-
 </script>
 
 <form  id="userform">
-  Текст для перевода на русском языке: <input type="text" id="inputtext">
+  Текст для перевода на русском языке: <input type="text" name="content" id="inputtext">
   <input type="submit" id="button" onclick="Translate()"> <br>
   Перевод на английский язык:<p id = "result"> </p>
 </form>
