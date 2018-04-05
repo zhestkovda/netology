@@ -12,8 +12,26 @@ const input = fs.createReadStream("test.txt");
 const output1 = fs.createWriteStream("test_output1.txt");
 const output2 = fs.createWriteStream("test_output2.txt");
 
+class Hashing extends Transform { 
+	constructor(type = 'md5') { 
+		super(); 
+		this.hash = crypto.createHash(type); 
+	}
+
+	_transform(chunk, encoding, callback) {
+	    this.hash.update(chunk);
+	    callback();
+	}
+
+	_flush(callback) {
+	    callback(null, this.hash.digest('hex'));
+	    delete this.hash;
+	}
+}
+
 task1();
 task2();
+
 
 
 function task1()
@@ -32,6 +50,9 @@ function task2()
 			callback(null,md5); 	
 		}
 	});
-	input.setEncoding('utf8');
-	input.pipe( calcMD5 ).pipe(output2);
+	//input.setEncoding('utf8');
+	//input.pipe( calcMD5 ).pipe(output2);
+	MyHashing = new Hashing();
+	input.pipe(MyHashing).pipe(output2);
+
 }

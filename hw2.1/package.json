@@ -1,0 +1,16 @@
+{
+  "name": "hw2.1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "path.join": "^1.0.0",
+    "query-string": "^6.0.0",
+    "url": "^0.11.0"
+  }
+}
