@@ -51,18 +51,7 @@ function sendTranslation(res, data){
 	})
 }
 
-const server = http.createServer(function (req, res) {
-	fs.readFile('./index.html', conf, function (err, html){
-	    if (err) {
-	        throw err; 
-	    } 
-	    else{
-			res.writeHeader(200, {"Content-Type": "text/html"}); 
-			res.write(html); 
-			//res.end(); //end the response
-	    }
-	});
-});
+const server = http.createServer();
 server.on('error', err => console.error(err));
 server.on('request', handler2);
 server.on('listening', () => {
@@ -78,6 +67,15 @@ function handler2(req, res) {
 		.then(data => sendTranslation(res, data))
 		.catch(error => console.error(error))
 	}
+	else{
+		fs.readFile('./index.html', conf, function (err, html){
+		    if (err) {
+		        throw err; 
+		    } 
+		    else{
+				res.writeHeader(200, {"Content-Type": "text/html"}); 
+				res.write(html); 
+		    }
+		});
+	}
 }
-
-
