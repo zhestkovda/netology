@@ -39,7 +39,11 @@ function translate(rusText){
 function sendTranslation(res, data){
 	return new Promise ((done, fail) => {
 		try{
+<<<<<<< HEAD
 			res.writeHeader(200, {'Content-Type': 'text/javascript'}); 
+=======
+			res.writeHeader(200, {'Content-Type': 'application/x-www-form-urlencoded'}); 
+>>>>>>> origin
 			res.write(data);
 		    res.end();
 		    done('Перевод был успешно отправлен')
