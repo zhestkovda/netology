@@ -4,13 +4,13 @@ var name;
 
 socket.on('userName', function(userName){ // Создаем прослушку 'userName' и принимаем переменную name в виде аргумента 'userName'
 	console.log('Your username is => ' + userName); // Логгирование в консоль браузера
-	$('textarea').val($('textarea').val() + 'Your username is ' + userName + '\n'); // Выводим в поле для текста оповещение для подключенного с его ником
+	appendtext('Your username is ' + userName + '\n');
 	name = userName;
 });
 
 socket.on('newUser', function(userName){ 
 	console.log('New user has been connected to chat | ' + userName);
-	$('textarea').val($('textarea').val() + userName + ' connected!\n');
+	appendtext(userName + ' connected!\n');
 });
 
 $(document).on('click', 'button', function(){ 
@@ -21,5 +21,10 @@ $(document).on('click', 'button', function(){
 
 socket.on('messageToClients', function(msg, name){
 	console.log(name + ' | => ' + msg); // Логгирование в консоль браузера
-	$('textarea').val($('textarea').val() + name + ' : '+ msg +'\n'); // Добавляем в поле для текста сообщение типа (Ник : текст)
+	appendtext(name + ' : '+ msg +'\n');
 });
+
+
+function appendtext(text){
+	$('textarea').val($('textarea').val() + text);
+}
