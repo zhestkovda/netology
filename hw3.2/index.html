@@ -1,0 +1,198 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Name book</title>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <script charset="utf-8">
+    $( document ).ready(function() {
+        $('#button_1').click(function(){ // Добавить контакт
+            var temp1 = document.getElementById('name').value
+            var temp2 = document.getElementById('surname').value
+            var temp3 = document.getElementById('phone').value
+
+            var data = {"name":temp1, "surname":temp2, "phone":temp3};
+            var temp = $.param(data)
+            //data = JSON.stringify(data);
+            
+            fetch('http://127.0.0.1:3000/add?' + temp, {  
+              method: 'post',  
+              headers: {  
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+              //body: data
+            })
+            //.then(json)  
+            .then(function (response) {  
+              console.log('Request succeeded with response: ', response.text());  
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+        
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+        $('#button_7').click(function(){ // Показать все контакты
+            $('#textarea').val(null);
+            fetch('http://127.0.0.1:3000/getAll') 
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function (data) {  
+                console.log(data); 
+                $.each(data,function(index,value){
+                    $('#textarea').val($('#textarea').val() + value.name + '  ' + value.surname + '  ' + value.phone + '\n');  
+                }) 
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+        $('#button_2').click(function(){ // Удалить контакт по имени
+            var temp1 = document.getElementById('name').value
+            var data = {"name":temp1};
+            var temp = $.param(data)
+            fetch('http://127.0.0.1:3000/del?' + temp,{
+              method: 'DELETE'
+            }) 
+            .then(function (data) {  
+                console.log(data); 
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+        $('#button_3').click(function(){ // редактировать контакт с данными именем и фамилией
+            var temp1 = document.getElementById('name').value
+            var temp2 = document.getElementById('surname').value
+            var temp3 = document.getElementById('phone').value
+            var data = {"name":temp1, "surname":temp2, "phone": temp3};
+            var temp = $.param(data)
+            fetch('http://127.0.0.1:3000/update?' + temp,{
+              method: 'PUT'
+            }) 
+            .then(function (data) {  
+                console.log(data); 
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+        $('#button_4').click(function(){ // поиск по имени
+            $('#textarea').val(null);
+            var temp1 = document.getElementById('name').value
+            var temp2 = document.getElementById('surname').value
+            var temp3 = document.getElementById('phone').value
+            var data = {"name":temp1};
+            var temp = $.param(data)
+            fetch('http://127.0.0.1:3000/getName?' + temp)
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function (data) {  
+                console.log(data); 
+                $.each(data,function(index,value){
+                    $('#textarea').val($('#textarea').val() + value.name + '  ' + value.surname + '  ' + value.phone + '\n');  
+                }) 
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+        $('#button_5').click(function(){ // поиск по имени
+            $('#textarea').val(null);
+            var temp1 = document.getElementById('name').value
+            var temp2 = document.getElementById('surname').value
+            var temp3 = document.getElementById('phone').value
+            var data = {"surname":temp2};
+            var temp = $.param(data)
+            fetch('http://127.0.0.1:3000/getSurname?' + temp)
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function (data) {  
+                console.log(data); 
+                $.each(data,function(index,value){
+                    $('#textarea').val($('#textarea').val() + value.name + '  ' + value.surname + '  ' + value.phone + '\n');  
+                }) 
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+        $('#button_6').click(function(){ // поиск по имени
+            $('#textarea').val(null);
+            var temp1 = document.getElementById('name').value
+            var temp2 = document.getElementById('surname').value
+            var temp3 = document.getElementById('phone').value
+            var data = {"phone":temp3};
+            var temp = $.param(data)
+            fetch('http://127.0.0.1:3000/getPhone?' + temp)
+            .then((resp) => resp.json()) // Transform the data into json
+            .then(function (data) {  
+                console.log(data); 
+                $.each(data,function(index,value){
+                    $('#textarea').val($('#textarea').val() + value.name + '  ' + value.surname + '  ' + value.phone + '\n');  
+                }) 
+            })  
+            .catch(function (error) {  
+              console.log('Request failed', error);  
+            });
+            $('#name').val(null);
+            $('#surname').val(null);
+            $('#phone').val(null);
+        });
+
+    });  
+
+    
+
+    </script>
+    <br>
+    <button type="button" id="button_1">Добавить контакт</button>
+    <button type="button" id="button_2">Удалить контакт</button>
+    <button type="button" id="button_3">Редактировать контакт</button> <br><br>
+    <br>
+    <table border=0>
+        <tr>
+          <td> <button type="button" id="button_4">Найти по имени</button> </td>
+          <td> <button type="button" id="button_5">Найти по фамилии</button> </td>
+          <td> <button type="button" id="button_6">Найти по телефону</button> </td>
+        </tr>
+        <tr>
+          <td> Имя </td>
+          <td> Фамилия </td>
+          <td> Телефон </td>
+        </tr>
+        <tr>
+            <td><input type="text" id="name" size="20"></td>
+            <td><input type="text" id="surname" size="20"></td>
+            <td><input type="text" id="phone" size="20"></td>
+        </tr>
+    </table>
+    <br>
+    
+    <button type="button" id="button_7">Показать все данные</button> 
+    <br>
+    <br>
+    <textarea name="name" rows="20" cols="50" id="textarea"></textarea>
+  </body>
+</html>
