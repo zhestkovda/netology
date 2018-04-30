@@ -83,7 +83,7 @@ app.put('/users/update', (req,res) => {
 
 app.delete('/users/delete', (req,res) => {
 	console.log('DELETE /users');
-	User.findOneAndRemove({ name: req.body.name }, function(err) {
+	User.findByIdAndRemove(req.body.id, function(err) {
 	  if (err) throw err;
 
 	  // we have deleted the user
@@ -151,7 +151,7 @@ app.put('/tasks/update', (req,res) => {
 });
 
 app.delete('/tasks/delete', (req,res) => {
-	Task.findOneAndRemove({ name: req.body.name }, function(err) {
+	Task.findByIdAndRemove(req.body.id, function(err) {
 	  if (err) throw err;
 	  // we have deleted the user
 	  res.send();
@@ -201,31 +201,18 @@ app.put('/tasks/delegate', (req,res) => {
 	res.send();
 });
 
-app.put('/tasks/search', (req,res) => {
+app.get('/tasks/search', (req,res) => {
 	console.log('PUT /tasks/search' + ' ' + req.body.name + ' ' + req.body.description);
 	var result;
-	if (req.body.name != undefined)
-	{
-		Task.find({ name: req.body.name }, function(err, tasks) {
+	
+	Task.find({$or: [{'name' : { $regex: String(req.body.name), $options: 'i' }},
+			         {'description' : { $regex: String(req.body.description), $options: 'i' }}]}, 
+			   function(err, tasks) {
 		  if (err) throw err;
 		  console.log('Task search completed!');
 		  res.send(tasks);
+		  console.log(' number of tasks founded: ' + tasks.length);
 		});
-	}
-	else
-	{
-		if (req.body.description != undefined)
-		{
-			Task.find({ description: req.body.description }, function(err, tasks) {
-			  if (err) throw err;
-			  console.log('Task search completed!');
-			  res.send(tasks);
-			});
-		}
-		else{
-			res.send();
-		}
-	}
 });
 
 
