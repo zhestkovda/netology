@@ -1,0 +1,31 @@
+<style>
+    .ng-dirty.ng-invalid {
+        border-color: #FA787E;
+    }
+
+    .ng-dirty.ng-valid {
+        border-color: #78FA89;
+    }
+</style>
+
+<div class="alert alert-success" role="alert" ng-if="editSuccess">Обновлены данные пользователя с ID: {{newUserId}}!</div>
+
+<form name="userForm" novalidate>
+    <div class="form-group">
+        <label>ID</label>
+        <input class="form-control" ng-model="newUser.id" type="text" placeholder="ID" required>
+    </div>
+    <div class="form-group">
+        <label>Имя</label>
+        <input class="form-control" ng-model="newUser.name" type="text" placeholder="Имя" required>
+    </div>
+    <div class="form-group">
+        <label>Логин</label>
+        <input class="form-control" ng-model="newUser.username" type="text" placeholder="Логин">
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" ng-model="newUser.email" type="text" placeholder="Email">
+    </div>
+    <button type="submit" class="btn btn-default" ng-click="editUser(newUser.id,newUser)" ng-disabled="userForm.$invalid">Сохранить</button>
+</form>
