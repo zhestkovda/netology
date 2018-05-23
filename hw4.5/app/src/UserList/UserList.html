@@ -1,0 +1,13 @@
+<div class="list-group">
+  <md-content>
+	<md-list>
+	  <md-list-item class="md-2-line" user="singleUser" ng-repeat="singleUser in $ctrl.users" >
+	  <div class="md-list-item-text">
+            <user-list-item user="singleUser"></user-list-item>
+      </div>
+	  </md-list-item>
+	</md-list>
+
+    <!-- <user-list-item user="singleUser" ng-repeat="singleUser in $ctrl.users"></user-list-item> -->
+  </md-content>
+</div>
